@@ -9,7 +9,7 @@ class Node{
     this->next=NULL;
    }
 };
-void print(Node* head){
+void print(Node* &head){
     Node* temp=head;
     while(temp!=NULL){
         cout<<temp->data<<" ";
@@ -17,46 +17,47 @@ void print(Node* head){
     }
 
 }
- int getlength(Node* &head){
+int getlength(Node* &head){
     int len=0;
-    Node* tamp=head;
-    while(tamp!=NULL){
-          tamp=tamp->next;
-          len++;
+    Node* temp=head;
+    while(temp!=NULL){
+        len++;
+        temp=temp->next;
     }
     return len;
-   
-  }
-Node* reverseKNodes(Node* &head,int k){
-    if(head=NULL){
-        cout<<"LL is empty"<<endl;
-        return NULL;
-    }
-    int len=getlength(head);
-    if(k>len){
-        cout<<len<<endl;
-        cout<<"Enter valid vlue for k"<<endl;
-        return head;
-    }
-    //it means number odf nodes in LL is>=k
-    //step A: reverse first k Nodes of LL
-    Node* prev=NULL;
-    Node* curr=head;
-    Node* forward=curr->next;
-    int count=0;
-    while(count<k){
-        forward=curr->next;
-        curr->next=prev;
-        prev=curr;
-        curr=forward;
-        count++;
-    }
-    //step:B recursive call
-    if(forward!=NULL){
-        //we still have nodes to reverse
-        head->next=reverseKNodes(forward,k);
-    }
-    return prev;
+}
+Node* reversKNodes(Node* &head,int k){
+ if(head==NULL){
+    cout<<"LL is empty";
+    return NULL;
+ }
+ int len=getlength(head);
+ if(k>len){
+    cout<<"Enter value for k"<<endl;
+    return head;
+ }
+ //it means number of nodes is greater then k
+ //step-a reverse first k nodes
+ Node* prev=NULL;
+ Node* curr=head;
+ Node* forward=curr->next;
+ int count=0;
+ while(count<k){
+   forward=curr->next;
+   curr->next=prev;
+   prev=curr;
+   curr=forward;
+
+    count++;
+
+ }
+ //step-B recursive call
+ if(curr!=NULL){
+    //we still have nodes to reverse
+    head->next=reversKNodes(curr,k);
+ }
+//  step-c return head of the modified LL
+return prev;
 }
 int main(){
     Node* head=new Node(10);
@@ -71,9 +72,9 @@ int main(){
     third->next=four;
     four->next=five;
     five->next=six;
-    // six->next=NULL;
-    // print(head);
-    head=reverseKNodes(head,3);
+    print(head);
+    cout<<endl;
+    head=reversKNodes(head,3 );
     print(head);
     return 0;
 }
